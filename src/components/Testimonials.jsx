@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import lindseyImage from '../assets/lindsey-image.png';
 
 // Testimonials Section with Hero-Style Background
@@ -28,26 +30,32 @@ function Testimonials() {
   ];
 
   return (
-    <section className="bg-neutral-950 py-8 relative overflow-hidden">
+    <section className="bg-neutral-900 py-4 md:py-6 relative overflow-hidden">
       {/* Diagonal Boxes + Texture Overlay */}
       <div className="absolute -top-24 -right-24 h-72 w-72 rotate-12 rounded-[40px] border border-white/10 bg-white/5" />
       <div className="absolute -bottom-32 -left-28 h-96 w-96 -rotate-12 rounded-[52px] border border-orange-500/20 bg-orange-500/10" />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-neutral-950/90 to-neutral-950">
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-900 via-neutral-900/90 to-neutral-900">
         <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 z-10 relative">
-        <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
           <h2 className="text-3xl font-bold text-white">What Our Clients Are Saying</h2>
-          <p className="mt-4 text-lg text-white/80">
+          <p className="mt-3 text-lg text-white/80">
             Real stories, real results.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="mt-6 space-y-8">
+        <div className="mt-4 space-y-5">
           {/* Testimonial Cards */}
-          <div className="flex flex-wrap gap-8 justify-center">
+          <div className="flex flex-wrap gap-5 justify-center">
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.name}
@@ -68,14 +76,20 @@ function Testimonials() {
           </div>
         </div>
 
-        <div className="mt-6 text-center">
-          <a
-            href="/membership"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-5 text-center"
+        >
+          <Link
+            to="/get-started"
             className="inline-flex items-center justify-center px-6 py-3 bg-orange-500 text-black font-semibold rounded-lg hover:bg-orange-400 transition"
           >
             Start Your Transformation Today
-          </a>
-        </div>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

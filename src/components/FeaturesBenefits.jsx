@@ -1,4 +1,6 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import personalizedImage from '../assets/one-on-one-image.png';
 import progressImage from '../assets/progress.png';
 import communityImage from '../assets/group-training-image.png';
@@ -45,24 +47,30 @@ function FeaturesBenefits() {
   ];
 
   return (
-    <section className="bg-neutral-950 py-8 relative overflow-hidden">
+    <section className="bg-neutral-900 py-4 md:py-6 relative overflow-hidden">
       {/* Diagonal Boxes + Texture Overlay */}
       <div className="absolute -top-24 -right-24 h-72 w-72 rotate-12 rounded-[40px] border border-white/10 bg-white/5" />
       <div className="absolute -bottom-32 -left-28 h-96 w-96 -rotate-12 rounded-[52px] border border-orange-500/20 bg-orange-500/10" />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-neutral-950/90 to-neutral-950">
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-900 via-neutral-900/90 to-neutral-900">
         <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 z-10 relative">
-        <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
           <h2 className="text-3xl font-bold text-white">Why Choose Us</h2>
-          <p className="mt-4 text-lg text-white/80">
-            We’re not just about workouts — we’re about results.
+          <p className="mt-3 text-lg text-white/80">
+            We're not just about workouts — we're about results.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="mt-6 grid sm:grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mt-4 grid sm:grid-cols-1 md:grid-cols-3 gap-5">
           {features.map((feature) => (
             <div
               key={feature.title}
@@ -89,14 +97,20 @@ function FeaturesBenefits() {
           ))}
         </div>
 
-        <div className="mt-6 text-center">
-          <a
-            href="/programs"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-5 text-center"
+        >
+          <Link
+            to="/program"
             className="inline-flex items-center justify-center px-6 py-3 bg-orange-500 text-black font-semibold rounded-lg hover:bg-orange-400 transition"
           >
             Explore Our Programs
-          </a>
-        </div>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

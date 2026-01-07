@@ -6,7 +6,7 @@ import FAQ from "../components/FAQ";
 
 function FAQPage() {
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-neutral-900">
       <Header />
       <FAQ />
       <Footer />

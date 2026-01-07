@@ -1,16 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 function Privacy() {
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-neutral-900">
       <Header />
       
       <section className="relative py-16 overflow-hidden">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl font-bold text-white mb-8">Privacy Policy</h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold text-white mb-8"
+          >
+            Privacy Policy
+          </motion.h1>
           <div className="space-y-6 text-white/70 leading-relaxed">
             <p className="text-sm text-white/60">Last updated: {new Date().toLocaleDateString()}</p>
             
@@ -36,7 +45,7 @@ function Privacy() {
 
             <div>
               <h2 className="text-2xl font-bold text-white mb-4">5. Contact Us</h2>
-              <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:info@supremeathletics.com" className="text-orange-500 hover:underline">info@supremeathletics.com</a>.</p>
+              <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:RE@thesupremeathletics.com" className="text-orange-500 hover:underline">RE@thesupremeathletics.com</a>.</p>
             </div>
           </div>
         </div>

@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 
 function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+
+  // Scroll to top when route changes
+  useEffect(() => {
+    // Use requestAnimationFrame to ensure DOM is ready after route change
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      
+      // Also try after a small delay to handle any async rendering
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }, 0);
+    });
+  }, [location.pathname]);
 
   useEffect(() => {
     const toggleVisibility = () => {

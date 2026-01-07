@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import Header from "./Header";
 import heroImage from "../assets/hero1.png";
 
@@ -55,7 +56,7 @@ function Hero({
   title = "Train smarter. Get results.",
   highlight = "results",
   subtitle = "Strength + conditioning built for real life. Personalized coaching, measurable progress, and a community that keeps you consistent.",
-  primaryCta = { label: "Book Free Assessment", href: "/membership" },
+  primaryCta = { label: "Get Started", href: "/get-started" },
   secondaryCta = { label: "See Programs", href: "/program" },
   stats = [
     { label: "1:1 Coaching", value: "Personalized" },
@@ -82,21 +83,21 @@ function Hero({
     };
   }, [title, highlight]);
 
-  return (
-    <section className="relative overflow-hidden bg-neutral-950">
-      {/* Background image + overlays */}
-      <div className="absolute inset-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={HERO_IMAGE}
-          alt=""
-          className="h-full w-full object-cover opacity-35"
-          onError={(e) => {
-            // If image missing, keep a clean gradient background
-            e.currentTarget.style.display = "none";
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-neutral-950/80 to-neutral-950" />
+      return (
+        <section className="relative overflow-hidden bg-neutral-900">
+          {/* Background image + overlays */}
+          <div className="absolute inset-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={HERO_IMAGE}
+              alt=""
+              className="h-full w-full object-cover opacity-35"
+              onError={(e) => {
+                // If image missing, keep a clean gradient background
+                e.currentTarget.style.display = "none";
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-neutral-900 via-neutral-900/80 to-neutral-900" />
 
         {/* Subtle grid texture */}
         <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:48px_48px]" />
@@ -106,30 +107,54 @@ function Hero({
         <div className="absolute -bottom-32 -left-28 h-96 w-96 -rotate-12 rounded-[52px] border border-orange-500/20 bg-orange-500/10" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-14 pb-8 md:pt-10">
-        <div className="grid lg:grid-cols-12 gap-10 items-center">
+      <div className="relative mx-auto max-w-7xl px-4 pt-4 pb-0 md:pt-6 md:pb-0">
+        <div className="grid lg:grid-cols-12 gap-6 items-center">
           {/* Left: Copy */}
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70"
+            >
               <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
               Gaithersburg Strength & Conditioning
               <span className="text-white/30">•</span>
               Bodies under construction
-            </div>
+            </motion.div>
 
-            <h1 className="mt-5 text-4xl md:text-6xl font-black tracking-tight text-white leading-[1.02]">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mt-3 text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.02]"
+            >
               {richTitle.before}
               {richTitle.mid && (
                 <span className="text-orange-500">{richTitle.mid}</span>
               )}
               {richTitle.after}
-            </h1>
+            </motion.h1>
 
-            <p className="mt-5 text-lg text-white/75 max-w-2xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mt-3 text-lg text-white/75 max-w-2xl"
+            >
               {subtitle}
-            </p>
+            </motion.p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-4 flex flex-wrap items-center gap-3"
+            >
               <Link
                 to={primaryCta.href}
                 className="inline-flex items-center justify-center px-6 h-12 rounded-2xl bg-orange-500 text-black font-semibold hover:bg-orange-400 transition"
@@ -148,27 +173,50 @@ function Hero({
                 <span className="text-white/80 font-medium">No guesswork.</span>{" "}
                 Get a plan you can follow.
               </div>
-            </div>
+            </motion.div>
 
             {/* Stat chips */}
-            <div className="mt-8 grid sm:grid-cols-3 gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-4 grid sm:grid-cols-3 gap-3"
+            >
               {stats.map((s) => (
-                <div
+                <motion.div
                   key={s.label}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-3"
                 >
                   <div className="text-xs text-white/60">{s.label}</div>
                   <div className="mt-1 text-white font-semibold">
                     {s.value}
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Trust bullets */}
-            <div className="mt-8 grid md:grid-cols-3 gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="mt-4 grid md:grid-cols-3 gap-3"
+            >
               {trust.map((t) => (
-                <div key={t.label} className="flex gap-3">
+                <motion.div
+                  key={t.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: false, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: 0.7 }}
+                  className="flex gap-3"
+                >
                   <div className="mt-1 h-5 w-5 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center">
                     <div className="h-2 w-2 rounded-full bg-orange-500" />
                   </div>
@@ -178,13 +226,19 @@ function Hero({
                     </div>
                     <div className="text-white/60 text-sm">{t.desc}</div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* Right: Hero Image */}
-          <div className="lg:col-span-5">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="lg:col-span-5"
+          >
             <div className="rounded-3xl overflow-hidden">
               <img
                 src={heroImage}
@@ -192,19 +246,19 @@ function Hero({
                 className="w-full h-full object-cover rounded-3xl"
               />
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Bottom divider */}
-        <div className="mt-6 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="mt-2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </div>
     </section>
   );
 }
 
-export default function SupremeHeaderHero() {
-  return (
-    <div className="min-h-screen bg-neutral-950">
+    export default function SupremeHeaderHero() {
+      return (
+        <>
       <Header />
       <Hero
         // Customize copy here if you want
@@ -215,6 +269,6 @@ export default function SupremeHeaderHero() {
           console.log("Lead submitted:", data);
         }}
       />
-    </div>
+    </>
   );
 }

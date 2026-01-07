@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 
-const LOGO_SRC = "/logo-supreme.png";
+const LOGO_SRC = "/logo.png";
 
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Program", href: "/program" },
   { label: "About", href: "/about" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Videos", href: "/videos" },
   { label: "Join Our Training Team", href: "/join-team" },
   { label: "Become A Member", href: "/membership" },
 ];
@@ -40,6 +42,9 @@ function IconClose(props) {
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const navRef = useRef(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({});
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -57,52 +62,88 @@ export default function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Update indicator position when route changes
+  useEffect(() => {
+    if (!navRef.current) return;
+    
+    const activeIndex = navLinks.findIndex(
+      (l) => location.pathname === l.href || 
+        (l.href !== "/" && location.pathname.startsWith(l.href + "/"))
+    );
+    
+    if (activeIndex === -1) {
+      setIndicatorStyle({ opacity: 0 });
+      return;
+    }
+
+    const navItems = navRef.current.querySelectorAll('a');
+    const activeItem = navItems[activeIndex];
+    
+    if (activeItem) {
+      const navRect = navRef.current.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+      
+      setIndicatorStyle({
+        left: `${itemRect.left - navRect.left}px`,
+        width: `${itemRect.width}px`,
+        opacity: 1,
+      });
+    }
+  }, [location.pathname]);
+
   return (
     <header className="sticky top-0 z-50">
       <div
         className={cn(
           "transition-all",
           scrolled
-            ? "bg-neutral-950/90 backdrop-blur border-b border-white/10"
-            : "bg-neutral-950/40 backdrop-blur-sm"
+            ? "bg-neutral-900/90 backdrop-blur border-b border-white/10"
+            : "bg-neutral-900/40 backdrop-blur-sm"
         )}
       >
         <div className="mx-auto max-w-7xl px-4">
           <div className="h-16 flex items-center justify-between">
             {/* Brand */}
-            <Link to="/" className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center">
-                <img
-                  src={LOGO_SRC}
-                  alt="Supreme Athletics"
-                  className="h-10 w-10 object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              </div>
-
-              <div className="leading-tight">
-                <div className="text-white font-semibold tracking-tight">
-                  Supreme Athletics
-                </div>
-                <div className="text-[11px] text-white/60">
-                  Strength • Conditioning • Results
-                </div>
-              </div>
+            <Link 
+              to="/" 
+              className="flex items-center"
+            >
+              <img
+                src={LOGO_SRC}
+                alt="Supreme Athletics"
+                className="h-16 w-auto object-contain"
+              />
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navLinks.map((l) => (
+            <nav ref={navRef} className="hidden lg:flex items-center gap-1 relative">
+              {/* Sliding background indicator */}
+              <div
+                className="absolute h-8 bg-white/10 rounded-lg transition-all duration-300 ease-in-out"
+                style={{
+                  ...indicatorStyle,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              />
+              {navLinks.map((l) => {
+                const isActive = location.pathname === l.href || 
+                  (l.href !== "/" && location.pathname.startsWith(l.href + "/"));
+                return (
                 <Link
                   key={l.href}
                   to={l.href}
-                  className="px-3 py-2 text-sm text-white/75 hover:text-white rounded-lg hover:bg-white/5 transition"
+                    className={cn(
+                      "px-3 py-2 text-sm rounded-lg transition-all duration-300 ease-in-out relative z-10",
+                      isActive
+                        ? "text-white font-medium"
+                        : "text-white/75 hover:text-white hover:bg-white/5"
+                    )}
                 >
                   {l.label}
                 </Link>
-              ))}
+                );
+              })}
             </nav>
 
             {/* Actions */}
@@ -115,10 +156,10 @@ export default function Header() {
               </Link>
 
               <Link
-                to="/membership"
+                to="/get-started"
                 className="hidden md:inline-flex items-center justify-center px-4 h-10 rounded-xl bg-orange-500 text-black font-semibold hover:bg-orange-400 transition text-sm"
               >
-                Book Free Assessment
+                Get Started
               </Link>
 
               {/* Mobile toggle */}
@@ -136,13 +177,25 @@ export default function Header() {
       </div>
 
       {/* Mobile Drawer */}
-      {open && (
-        <div className="lg:hidden fixed inset-0 z-[60]">
+      <div
+        className={cn(
+          "lg:hidden fixed inset-0 z-[60] transition-opacity duration-300",
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+      >
           <div
-            className="absolute inset-0 bg-black/70"
+          className={cn(
+            "absolute inset-0 bg-black/70 transition-opacity duration-300",
+            open ? "opacity-100" : "opacity-0"
+          )}
             onClick={() => setOpen(false)}
           />
-          <div className="absolute right-0 top-0 h-full w-[86%] max-w-sm bg-neutral-950 border-l border-white/10 p-4">
+        <div
+          className={cn(
+            "absolute right-0 top-0 h-full w-[86%] max-w-sm bg-neutral-900 border-l border-white/10 p-4 transition-transform duration-300 ease-out",
+            open ? "translate-x-0" : "translate-x-full"
+          )}
+        >
             <div className="flex items-center justify-between">
               <div className="text-white font-semibold">Menu</div>
               <button
@@ -156,44 +209,81 @@ export default function Header() {
             </div>
 
             <div className="mt-4 space-y-1">
-              {navLinks.map((l) => (
+            {navLinks.map((l, index) => {
+              const isActive = location.pathname === l.href || 
+                (l.href !== "/" && location.pathname.startsWith(l.href + "/"));
+              return (
                 <Link
                   key={l.href}
                   to={l.href}
-                  className="block px-3 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/5 transition"
+                  className={cn(
+                    "block px-3 py-3 rounded-xl transition-all duration-300 ease-in-out",
+                    isActive
+                      ? "text-white bg-white/10 font-medium"
+                      : "text-white/80 hover:text-white hover:bg-white/5",
+                    open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+                  )}
+                  style={{
+                    transitionDelay: open ? `${index * 50}ms` : `${index * 30}ms`
+                  }}
                   onClick={() => setOpen(false)}
                 >
                   {l.label}
                 </Link>
-              ))}
+              );
+            })}
             </div>
 
             <div className="mt-6 space-y-2">
               <Link
                 to="/program"
-                className="w-full inline-flex items-center justify-center px-4 h-11 rounded-xl border border-white/10 bg-white/5 text-white/90 hover:bg-white/10 transition font-medium"
+              className={cn(
+                "w-full inline-flex items-center justify-center px-4 h-11 rounded-xl border border-white/10 bg-white/5 text-white/90 hover:bg-white/10 transition-all duration-300 ease-in-out font-medium",
+                open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+              )}
+              style={{
+                transitionDelay: open ? `${navLinks.length * 50}ms` : `${navLinks.length * 30}ms`
+              }}
                 onClick={() => setOpen(false)}
               >
                 View Programs
               </Link>
               <Link
-                to="/membership"
-                className="w-full inline-flex items-center justify-center px-4 h-11 rounded-xl bg-orange-500 text-black font-semibold hover:bg-orange-400 transition"
+                to="/get-started"
+              className={cn(
+                "w-full inline-flex items-center justify-center px-4 h-11 rounded-xl bg-orange-500 text-black font-semibold hover:bg-orange-400 transition-all duration-300 ease-in-out",
+                open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+              )}
+              style={{
+                transitionDelay: open ? `${(navLinks.length + 1) * 50}ms` : `${(navLinks.length + 1) * 30}ms`
+              }}
                 onClick={() => setOpen(false)}
               >
-                Book Free Assessment
+                Get Started
               </Link>
 
-              <div className="pt-4 text-xs text-white/60">
-                <div>8648 Dakota Dr., Gaithersburg, MD 20877</div>
-                <a className="hover:text-white" href="tel:3013661839">
-                  (301) 366-1839
+            <div className={cn(
+              "pt-4 text-xs text-white/60 transition-all duration-300 ease-in-out",
+              open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+            )}
+            style={{
+              transitionDelay: open ? `${(navLinks.length + 2) * 50}ms` : `${(navLinks.length + 2) * 30}ms`
+            }}>
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=8648+Dakota+Dr,+Gaithersburg,+MD+20877"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:text-orange-500 transition cursor-pointer mb-2"
+                >
+                  8648 Dakota Dr., Gaithersburg, MD 20877
+                </a>
+                <a className="hover:text-white" href="tel:2408552744">
+                  (240) 855-2744
                 </a>
               </div>
             </div>
           </div>
         </div>
-      )}
     </header>
   );
 }
